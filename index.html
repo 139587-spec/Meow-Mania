@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meow Mania 😻</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="season-canvas"></canvas>
+
+    <div class="container">
+        <button id="reset-game" class="reset-btn">Reset Game</button>
+        <!--Header-->
+        <header>
+            <h1>Meow Mania 😻</h1>
+            <p class="Subtitle">Click, cuddle, and collect all the kitties!</p>
+        </header>
+    
+    <main>
+        <!--Stats Section-->
+        <section class="stats">
+            <p>🧵 Meows: <span id="meow">0</span></p>
+            <p>🐟 Cat Treats: <span id="treats">0</span></p>
+            <div class="progress-bars">
+                <div class="progress-container">
+                    <p>Paw Power</p>
+                    <div class="progress-bar">
+                        <div id="paw-level" class="progress-fill"></div>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <p>Cat Crew</p>
+                    <div class="progress-bar">
+                        <div id="helper-level" class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+    <!--Click Zone-->
+    <section class="click-zone card">
+        <div class="yarn-container">
+            <img src="assets/yarn.png" alt="Yarn Ball" id="yarn">
+            <div id="click-effects"></div> <!--this is for sparkles-->
+        </div>
+        <p>Click the yarn ball to earn meows!</p>
+    </section>
+
+    <!--Shop Section-->
+    <section class="shop card">
+        <h2>🛒 Shop & Upgrades</h2>
+        <div class="shop-item">
+            <button id="upgrade-paw">Sharpen Paw</button>
+            <p>Cost: 50 Cat Treats | +1 meow/click</p>
+        </div>
+        <div class="shop-item">
+            <button id="hire-helper">Adopt a Kitten</button>
+            <p>Cost: 200 Cat Treats | +1 meow/sec</p>
+        </div>
+        <div class="shop-item">
+            <button id="buy-yarn">Buy Rare Yarn</button>
+            <p>Cost: 300 Cat Treats | x2 meows for 30s</p>
+        </div>
+        <div class="shop-item">
+            <button id="expand-caf">Buy Rare Yarn</button>
+            <p>Cost: 300 Cat Treats | x2 meows for 30s</p>
+        </div>
+    </section>
+    
+    
+    
+    </main>
+    </div>
+</body>
