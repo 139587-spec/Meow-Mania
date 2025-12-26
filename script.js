@@ -268,3 +268,116 @@ function animateClickEffect(count) {
         setTimeout(() => clickEffect.removeChild(sparkle), 850);
     }
 }
+
+
+//The yarn bounce effects
+function animateYarnClick() {
+    yarn.style.transform = 'scale(1.15) rotate(-5deg)';
+    setTimeout(() => {
+        yarn.style.transform = 'scale(1) rotate(0deg)'
+    }, 150);
+}
+
+//color shift - really subtle
+function animateGlow() {
+    //Yarn pulsing
+    const time = Date.now() / 1000;
+    const hue = 260 + 10 * Math.sin(time* 2); //pastel purple to blue shift
+    yarn.style.boxShadow = `0 0 20px hsla(${hue}, 70%, 80%, 0.7)`;
+
+    //glow for shop items
+    document.querySelectorAll('.shop-item').forEach(item => {
+        const hueShift = 220 + 10 * Math.sin(time);
+        item.style.boxShadow = `0 4px 12px hsla(${hueShift}, 70%, 80%, 0.7)`;
+    });
+}
+setInterval(animateGlow, 50); //the glow continues
+
+//buttons for shop
+upgradePawBtn.addEventListener('click', (e) => {
+    lastClickedElement = e.target;
+    if (meows >= 50) {
+        meows -= 50;
+        pawLevel += 1;
+        meowsPerClick += 1;
+        updateDisplay();
+        unlockAchievement('Paw Boosted');
+        savegame();
+    } else showPopup('Sorry, not enough treats!', e);
+});
+
+hireHelperBtn.addEventListener('click', (e) => {
+    if (meows >= 200) {
+        meows -= 200;
+        helperLevel += 1;
+        meowsPerSecond += 1;
+        updateDisplay();
+        unlockAchievement('Cat Crew');
+        savegame();
+    } else showPopup('Sorry, not enough treats!', e);
+});
+
+buyYarnBtn.addEventListener('click', (e) => {
+    if (meows >= 300) {
+        meows -= 300;
+        rareYarnActive = true;
+        showPopup('Rare Yarn Activated! x2 meows for 30s!');
+        updateDisplay();
+        setTimeout(() => {
+            rareYarnActive = false;
+            showPopup("Rare Yarn Effect Wore Off!");
+        }, 30000);
+    } else showPopup('Sorry, not enough meows!', e);
+});
+
+expandCaféBtn.addEventListener('click', (e) => {
+    if (meows >= 500) {
+        meows -= 500;
+        craftingSlots += 1;
+        createCraftingSlot();
+        updateDisplay();
+        showPopup("Café Expanded!")
+        savegame();
+    } else showPopup('Sorry, not enough meows!', e);
+});
+
+//ALL Crafting
+function createCraftingSlot() {
+    craftingSlotsContainer.innerHTML = '';
+
+    const costs = {
+        Toy: 20,
+        Bed: 35,
+        Blanket: 60
+    };
+
+    for (let i = 0; i < craftingSlots; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'crafting-slot';
+        slot.innerHTML = `
+          <button onclick="craftItem('Toy')">Toy</button?
+          <p class="craft-cost">Cost: ${costs.Toy} meows</p>
+
+          <button onclick="craftItem('Bed')">Toy</button?
+          <p class="craft-cost">Cost: ${costs.Bed} meows</p>
+
+          <button onclick="craftItem('Blanket')">Toy</button?
+          <p class="craft-cost">Cost: ${costs.Blanket} meows</p>
+        `;
+        craftingSlotsContainer.appendChild(slot);
+    }
+}
+createCraftingSlot();
+
+function craftItem(item) {
+    const costs = {
+        Toy: 20,
+        Bed: 35,
+        Blanket: 60
+    };
+
+    const cost = costs[item];
+
+    //check if enough stitches
+    if (meows >=)
+}
