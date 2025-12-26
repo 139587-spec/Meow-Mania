@@ -240,7 +240,7 @@ yarn.addEventListener('click', (e) => {
     if (rareYarnActive) earned *= 2;
     meows += earned;
 
-    animateClickedEffect(5); //this creates multiple sparkles
+    animateClickEffect(5); //this creates multiple sparkles
     animateYarnClick();
     updateDisplay();
     unlockAchievement('First Meow');
@@ -255,7 +255,7 @@ function animateClickEffect(count) {
         sparkle.style.position = 'absolute';
         sparkle.style.top = `${(Math.random() - 0.5) * 50}px`;
         sparkle.style.left = `${(Math.random() - 0.5) * 50}px`;
-        sparkle.style.fontsize = `${Math.random() * 12}px`;
+        sparkle.style.fontSize = `${Math.random() * 12}px`;
         sparkle.style.opacity = 1;
         sparkle.style.transition = 'all 0.8s ease-out';
         clickEffect.appendChild(sparkle);
@@ -355,13 +355,13 @@ function createCraftingSlot() {
         const slot = document.createElement('div');
         slot.className = 'crafting-slot';
         slot.innerHTML = `
-          <button onclick="craftItem('Toy')">Toy</button?
+          <button onclick="craftItem('Toy')">Toy</button>
           <p class="craft-cost">Cost: ${costs.Toy} meows</p>
 
-          <button onclick="craftItem('Bed')">Toy</button?
+          <button onclick="craftItem('Bed')">Toy</button>
           <p class="craft-cost">Cost: ${costs.Bed} meows</p>
 
-          <button onclick="craftItem('Blanket')">Toy</button?
+          <button onclick="craftItem('Blanket')">Toy</button>
           <p class="craft-cost">Cost: ${costs.Blanket} meows</p>
         `;
         craftingSlotsContainer.appendChild(slot);
@@ -471,7 +471,7 @@ const resetBtn = document.getElementById('reset-game');
 resetBtn.addEventListener('click', () => {
     if (confirm("Are you sure you want to reset the game?")) {
         //this will clear the local history
-        sessionStorage.removeItem('MeowManiaSave');
+        sessionStorage.removeItem('meowManiaSave');
 
         //reset all the variables
         meows = 0;
