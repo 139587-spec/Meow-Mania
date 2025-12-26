@@ -282,13 +282,13 @@ function animateYarnClick() {
 function animateGlow() {
     //Yarn pulsing
     const time = Date.now() / 1000;
-    const hue = 260 + 10 * Math.sin(time* 2); //pastel purple to blue shift
-    yarn.style.boxShadow = `0 0 20px hsla(${hue}, 70%, 80%, 0.7)`;
+    const hue = 25 + 10 * Math.sin(time* 2); //pastel purple to blue shift
+    yarn.style.boxShadow = `0 0 20px hsla(${hue}, 80%, 60%, 0.7)`;
 
     //glow for shop items
     document.querySelectorAll('.shop-item').forEach(item => {
-        const hueShift = 220 + 10 * Math.sin(time);
-        item.style.boxShadow = `0 4px 12px hsla(${hueShift}, 70%, 80%, 0.7)`;
+        const hueShift = 20 + 8 * Math.sin(time);
+        item.style.boxShadow = `0 4px 12px hsla(${hueShift}, 80%, 60%, 0.7)`;
     });
 }
 setInterval(animateGlow, 50); //the glow continues
@@ -379,5 +379,126 @@ function craftItem(item) {
     const cost = costs[item];
 
     //check if enough stitches
-    if (meows >=)
+    if (meows >=cost) {
+        meows -= cost;
+        inventory[item] += 1;
+        showPopup(`Crafted a ${item}`);
+        updateDisplay();
+
+        //unlock achievements
+        if (inventory.Toy + inventory.Bed + inventory.Blanket === 1) {
+            unlockAchievement('First Toy Made');
+        }
+
+        const totalItems = inventory.Toy + inventory.Bed + inventory.Blanket;
+        if (totalItems >=50) unlockAchievement('Master of Meows');
+        savegame();
+    } else {
+        showPopup(`Sorry, not enough meows to craft a ${item}!`);
+    }
 }
+
+//Selling items
+sellItemsBtn.addEventListener('click', (e) => {
+    lastClickedElement = e.target
+    if (inventory.Toy + inventory.Bed + inventory.Blanket > 0) {
+        //calculates the treats based off of the item
+        const earnedTreats = inventory.Toy * 15 + inventory.Bed * 25 + inventory.Blanket * 40;
+
+        treats += earnedTreats;
+
+        //reset the inventory
+        inventory.Toy = 0;
+        inventory.Bed = 0;
+        inventory.Blanket = 0;
+
+        updateDisplay();
+        showPopup(`Sold all items for ${earnedTreats} treats!`, e.target);
+        savegame();
+    } else {
+        showPopup('No items to sell!', e.target);
+    }
+});
+
+//the passive income from helpers
+setInterval(() => {
+    meows += meowsPerSecond;
+    updateDisplay();
+}, 1000);
+
+//the achievement unlock function
+function unlockAchievement(name, targetElement = null) {
+    const achievement = [...achievementList.children].find(
+        a => a.dataset.name === name
+    );
+
+    if (achievement && !achievement.classList.contains('unlocked')) {
+    ///this marks it as unlocked
+    achievement.classList.add('unlocked');
+    achievement.style.transform = 'scale(1.1)';
+    achievement.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+    achievement.style.boxShadow = '0 0 15px rgba(255, 194, 150, 0.8)';
+    
+    //resetting the animation 
+    setTimeout(() => {
+        achievement.style.transform = 'scale(1)';
+        achievement.style.boxShadow = '';
+    }, 400);
+    
+    //popup message
+    showPopup(`Achievement Unlocked: ${name}!`, targetElement);
+
+    //sound
+    achievementSound.currentTime = 0;
+    achievementSound.play();
+    }
+}
+
+//initialize
+window.craftItem = craftItem; //make craftitem globally accessible
+
+loadGame();
+updateDisplay();
+
+//glow pulse for yarn
+const yarnElement = document.getElementById('yarn');
+yarnElement.classList.add('yarn-glow-animation');
+
+//reset button
+document.addEventListener('DOMContentLoaded', () => {
+const resetBtn = document.getElementById('reset-game');
+
+resetBtn.addEventListener('click', () => {
+    if (confirm("Are you sure you want to reset the game?")) {
+        //this will clear the local history
+        sessionStorage.removeItem('MeowManiaSave');
+
+        //reset all the variables
+        meows = 0;
+        treats = 0;
+        meowsPerClick = 1;
+        meowsPerSecond = 0;
+        pawLevel = 0;
+        helperLevel = 0;
+        craftingSlots = 1;
+        rareYarnActive = false;
+        Object.keys(inventory).forEach(key => inventory[key] = 0);
+
+        //reset acheivements visually
+        document.querySelectorAll('achievement-list .achievement').forEach(a => {
+            a.classList.remove('unlocked');
+            a.style.boxShadow = '';
+            a.style.transform = '';
+        });
+
+        //refresh the crafting slots
+        createCraftingSlot();
+
+        //update the display
+        updateDisplay();
+
+        //popup
+        showPopup("Game Fully Reset!");
+    }
+});
+});
